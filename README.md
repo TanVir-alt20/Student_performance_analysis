@@ -20,6 +20,7 @@ and writing scores.
 - dplyr
 - data.table
 - naniar
+- skimr
 - psych
 - DBI / RSQLite
 - writexl
