@@ -1,0 +1,104 @@
+---
+title: "ggplot2vis"
+author: "Tanvir"
+date: "`r Sys.time()`"
+output: 
+    html_document:
+      toc: true
+      toc_float: 
+       collapsed: false
+
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages
+
+Loading required packages
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(ggThemeAssist)
+library(data.table)
+```
+
+Setting Global Theme
+
+```{r}
+theme_set(theme_classic())
+```
+
+# Data
+
+```{r}
+student <- fread("Result/Cleaned_student_data.csv")
+```
+
+This dataset contains `r nrow(student)` students.
+
+# Scatter Plot
+
+```{r}
+ggplot(student, aes(x = Math_score, y = Reading_score, size = Writing_score)) + geom_point(aes(colour = Gender)) + labs(title = "Scatter plot of Math and Reading score", x = "Math Score", y = "Reading Score") + scale_fill_manual(values = c("female" = "#6C1C80", "male"= "#123B96"))
+```
+
+Females comparatively scored better score than males. 
+
+# Histogram
+
+```{r}
+ggplot(student) + geom_histogram(aes(x = Math_score, fill = Gender), bins = 10, col = "#ffffff", alpha = 0.6) + coord_cartesian(expand = FALSE)
+
+```
+
+## Facetwrap with ggthemes
+
+```{r}
+ggplot(student) + geom_histogram(aes(x = Math_score, fill = Gender), bins = 10, col = "#ffffff", alpha = 0.6) + facet_wrap(vars(Gender), ncol = 1) + theme_pander()
+```
+
+## Facetgrid with themebw
+
+```{r}
+ggplot(student) + geom_histogram(aes(x = Math_score, fill = Gender), bins = 10, col = "#ffffff", alpha = 0.6) + facet_grid(rows = vars(Gender), cols= vars(Test_prep_course)) + theme_bw()
+```
+
+# Plot customization using theme()
+
+```{r}
+ggplot(student,
+       aes(x = Math_score, y = Reading_score, size = Writing_score)) + geom_point(aes(colour = Gender)) + labs(title = "Scatter plot of Math and Reading score", x = "Math Score", y = "Reading Score") + scale_fill_manual(values = c("female" = "#6C1C80", "male" = "#123B96")) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold", size = 16),
+    axis.title.x = element_text(face = "italic", size = 12),
+    axis.title.y = element_text(face = "italic", size = 12),
+    plot.background = element_rect( fill = "grey90")
+  ) + guides(size = "none")
+```
+
+
+# Color on histogram
+
+```{r}
+ggplot(student) + geom_histogram(aes(x = Math_score, fill = Gender), bins = 10, col = "#ffffff", alpha = 0.6) + facet_wrap(vars(Gender), ncol = 1) + theme_pander() + scale_fill_manual(values = c("female" = "#6C1C80", "male"= "#123B96"))
+
+
+p1 <- ggplot(student) + geom_histogram(aes(x = Math_score, fill = Gender), bins = 10, col = "#ffffff", alpha = 0.8) + facet_wrap(vars(Gender), ncol = 1)+ scale_fill_brewer(palette = "Set2")
+```
+
+# Plotly
+
+```{r}
+p1 %>% plotly::ggplotly()
+
+p2 <- ggplot(student, aes(x = Grade, y = Math_score)) + geom_boxplot() +
+  geom_jitter()
+plotly::ggplotly(p2)
+```
+
+The highest math scores are obtained by grade A scorer students.
