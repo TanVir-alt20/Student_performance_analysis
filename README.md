@@ -14,6 +14,7 @@ and writing scores.
 - Performed EDA using dplyr, psych and skimr
 - Stored data in SQLite database
 - Exported results as CSV and Excel
+- Used ggplot2 for visualization and RMarkdown for report
 
 ## Tools Used
 - R
@@ -24,6 +25,7 @@ and writing scores.
 - psych
 - DBI / RSQLite
 - writexl
+- ggplot2, plotly & RMarkdown
 
 ## Key Findings
 - Male students scored higher in math (68.7 vs 63.6)
